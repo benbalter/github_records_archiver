@@ -33,7 +33,7 @@ You *may* set the following environmental variables:
 * `GITHUB_ARCHIVE_DIR` to specify the output directory. It will default to `./archive`.
 * `GITHUB_ORGANIZATION` - The organization to archive if none is passed as an argument.
 
-These can be passed as `GITHUB_TOKEN=123ABC GITHUB_ORGANIZATION=whitehouse ruby archive.rb`.
+These can be passed as `GITHUB_TOKEN=123ABC GITHUB_ORGANIZATION=whitehouse bin/archive`.
 
 You can also add the values to a `.env` file in the project's root directory, which will be automatically set as environmental variables.
 
