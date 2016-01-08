@@ -1,0 +1,110 @@
+#!/usr/bin/env ruby
+# Backs up a GitHub organization's repositories and
+# all their associated information for archival purposes.
+# Usage: ruby archive.rb
+
+# stdlib
+require 'yaml'
+require 'logger'
+require 'fileutils'
+require 'open3'
+
+# gems
+require 'octokit'
+require 'dotenv'
+
+# Configuration
+Dotenv.load
+Octokit.auto_paginate = true
+token    = ENV["GITHUB_TOKEN"]
+org      = ARGV[0] || ENV["GITHUB_ORGANIZATION"]
+dest_dir = ENV["GITHUB_ARCHIVE_DIR"] || File.expand_path("./archive/#{org}")
+client   = Octokit::Client.new :access_token => token
+logger   = Logger.new(STDOUT)
+pwd      = Dir.pwd
+start    = Time.now
+
+# properties to extract from each issue for the archive
+issue_keys = [:title, :number, :state, :html_url, :created_at, :closed_at]
+
+# Run a git command, piping output to stdout
+def git(*args)
+  system "git " + args.join(" ")
+end
+
+# Init the archive dir
+logger.info "Starting archive for #{org} in #{dest_dir}"
+FileUtils.mkdir_p dest_dir unless Dir.exists? dest_dir
+
+# Fetch all organization repositories
+repos = client.organization_repositories org
+logger.info "Found #{repos.count} repos"
+
+# Loop through each repository
+repos.each do |repo|
+  repo_dir = File.expand_path repo.name, dest_dir
+  clone_url = "https://#{token}:x-oauth-basic@github.com/#{org}/#{repo.name}.git"
+  logger.info "  Archiving #{repo.name} to #{repo_dir}"
+
+  # Git content
+  if Dir.exists? repo_dir # Repo already exists, just pull new objects
+    logger.info "    #{repo_dir} already exists. Pulling down updates"
+    Dir.chdir repo_dir
+    git "pull"
+  else # Clone Git content from scratch
+    logger.info "    #{repo_dir} does not exist. Cloning."
+    git "clone", clone_url, repo_dir
+  end
+
+  # Clone wiki content
+  if repo.has_wiki?
+    wiki_clone_url = "https://#{token}:x-oauth-basic@github.com/#{org}/#{repo.name}.wiki.git"
+    wiki_dir = File.expand_path "wiki", repo_dir
+    logger.info "    Archiving #{repo.name}'s Wiki to #{wiki_dir}"
+    `git clone #{wiki_clone_url} #{wiki_dir}`
+  end
+
+  # Create an issues directory
+  issues_dir = File.expand_path "issues", repo_dir
+  FileUtils.mkdir(issues_dir) unless Dir.exists? issues_dir
+
+  # Pull down issues and pull requests
+  issues = client.list_issues repo.full_name, :state => "all"
+  logger.info "    Found #{issues.count} issues for #{repo.name}"
+
+  # Loop through each issue or pull request
+  issues.each do |issue|
+    issue_path = File.expand_path "#{issue.number}.md", issues_dir
+    logger.info "      Archiving issue ##{issue.number} to #{issue_path}"
+
+    # Pull out issue meta (title, number, created date, etc.)
+    meta = {}
+    issue_keys.each { |key| meta[key.to_s] = issue[key] }
+    meta["user"] = issue.user.login
+
+    # Begin to format our output
+    output = meta.to_yaml
+    output << "---\n\n"
+    output << "# #{issue.title}\n\n"
+    output << issue.body
+
+    # Pull down and add comments
+    if issue.comments > 0
+      comments = client.issue_comments repo.full_name, issue.number
+      logger.info "        Found #{comments.count} comments for issue ##{issue.number}"
+
+      # Loop through each comment
+      comments.each do |comment|
+        output << "\n\n---\n"
+        output << "@#{comment.user.login} at #{comment.created_at} wrote:\n\n"
+        output << comment.body
+      end
+    end
+
+    # Write issue + comments to disk
+    File.write issue_path, output
+  end
+end
+
+Dir.chdir pwd
+logger.info "Done in #{Time.now - start} seconds."
