@@ -84,6 +84,7 @@ repos.each do |repo|
     meta["user"] = issue.user.login
     meta["tags"] = issue.labels.map {|l| l.name}
     meta["milestone"] = issue.milestone.to_h.select {|k,v| milestone_keys.include?(k) }.map{ |k, v| {k.to_s => v}}
+    meta["assignee"] = issue.assignee.login
 
     # Begin to format our output
     output = meta.to_yaml
