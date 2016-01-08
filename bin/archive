@@ -26,6 +26,7 @@ start    = Time.now
 
 # properties to extract from each issue for the archive
 issue_keys = [:title, :number, :state, :html_url, :created_at, :closed_at]
+milestone_keys = [:title, :number, :description, :state]
 
 # Run a git command, piping output to stdout
 def git(*args)
@@ -81,6 +82,7 @@ repos.each do |repo|
     meta = {}
     issue_keys.each { |key| meta[key.to_s] = issue[key] }
     meta["user"] = issue.user.login
+    meta["milestone"] = issue.milestone.to_h.select {|k,v| milestone_keys.include?(k) }.map{ |k, v| {k.to_s => v}}
 
     # Begin to format our output
     output = meta.to_yaml
