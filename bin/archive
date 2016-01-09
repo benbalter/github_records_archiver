@@ -19,6 +19,10 @@ Octokit.auto_paginate = true
 token    = ENV["GITHUB_TOKEN"]
 org      = ARGV[0] || ENV["GITHUB_ORGANIZATION"]
 dest_dir = ENV["GITHUB_ARCHIVE_DIR"] || File.expand_path("./archive/#{org}")
+
+# Timestamp each archive of the organization while still allowing custom archive directory in ENV
+dest_dir = "#{dest_dir}/#{Time.new.strftime('%Y%m%dT%H%M%S')}"
+
 client   = Octokit::Client.new :access_token => token
 logger   = Logger.new(STDOUT)
 pwd      = Dir.pwd
