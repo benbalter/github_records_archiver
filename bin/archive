@@ -31,6 +31,7 @@ start    = Time.now
 # properties to extract from each issue for the archive
 issue_keys = [:title, :number, :state, :html_url, :created_at, :closed_at]
 milestone_keys = [:title, :number, :description, :state]
+repo_info_keys = [:name, :full_name, :description, :private, :fork, :homepage, :forks_count, :stargazers_count, :watchers_count, :size]
 
 # Run a git command, piping output to stdout
 def git(*args)
@@ -68,6 +69,24 @@ repos.each do |repo|
     logger.info "    Archiving #{repo.name}'s Wiki to #{wiki_dir}"
     `git clone #{wiki_clone_url} #{wiki_dir}`
   end
+
+  # create folder for repo info
+  repo_info_dir = File.expand_path "repo info", repo_dir
+  FileUtils.mkdir(repo_info_dir) unless Dir.exists? repo_info_dir
+
+  # Create path for repo info file.
+  repo_info_path = File.expand_path "repo_info.md", repo_info_dir
+
+  # Get relevant repo info
+  repo_info = repo.to_h.select {|k,v| repo_info_keys.include?(k) }.map{ |k, v| {k.to_s => v}}
+
+  # Begin to format repo info output
+  repo_info_output = "---\n\n"
+  repo_info_output << "# Repo Info\n\n"
+  repo_info_output << repo_info.to_yaml
+
+  # Write repo info to disk
+  File.write repo_info_path, repo_info_output
 
   # Create an issues directory
   issues_dir = File.expand_path "issues", repo_dir
