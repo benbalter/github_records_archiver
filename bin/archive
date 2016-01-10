@@ -28,6 +28,9 @@ start    = Time.now
 issue_keys = [:title, :number, :state, :html_url, :created_at, :closed_at]
 milestone_keys = [:title, :number, :description, :state]
 repo_info_keys = [:name, :full_name, :description, :private, :fork, :homepage, :forks_count, :stargazers_count, :watchers_count, :size]
+team_keys = [:name, :slug, :description, :privacy, :permission]
+team_member_keys = [:login, :site_admin, :type]
+team_repo_keys = [:name, :full_name, :permissions]
 
 # Run a git command, piping output to stdout
 def git(*args)
@@ -37,6 +40,64 @@ end
 # Init the archive dir
 logger.info "Starting archive for #{org} in #{dest_dir}"
 FileUtils.mkdir_p dest_dir unless Dir.exists? dest_dir
+
+# Pull down Organization Teams and Team Members
+org_teams = client.organization_teams org
+
+# create folder for organizational team information
+teams_dir = File.expand_path "teams", dest_dir
+FileUtils.mkdir(teams_dir) unless Dir.exists? teams_dir
+
+# Loop through each team
+org_teams.each do |team|
+  # Create path for each team file. Use the team slug name to ensure no filesystem issues.
+  team_path = File.expand_path "#{team.slug}.md", teams_dir
+
+  # Pull out relavent team info from team_keys
+  team_info = {}
+  team_keys.each { |key| team_info[key.to_s] = team[key] }
+
+  # Begin to format team output
+  team_output = "---\n\n"
+  team_output << "# Team Info\n\n"
+  team_output << team_info.to_yaml
+
+  # Begin to format team repo output
+  team_output << "---\n\n"
+  team_output << "# Team Repos\n\n"
+
+  # Pull down team repositories
+  team_repos = client.team_repositories team.id
+  team_repos.each do |repo|
+    team_repo_info = {}
+    team_repo_keys.each { |key| team_repo_info[key.to_s] = repo[key] }
+
+    # Repo map permission hash from keys with symbols into strings
+    team_repo_info["permissions"] = team_repo_info["permissions"].map {|k,v| {k.to_s => v}}
+
+    # add team member info to team output
+    team_output << team_repo_info.to_yaml
+  end
+
+  # Begin to format team member output
+  team_output << "---\n\n"
+  team_output << "# Team Members\n\n"
+
+  # Pull down team members for current team
+  team_members = client.team_members team.id
+
+  # Pull out relavent team member info for each team member
+  team_members.each do |member|
+    team_member_info = {}
+    team_member_keys.each { |key| team_member_info[key.to_s] = member[key] }
+
+    # add team member info to team output
+    team_output << team_member_info.to_yaml
+  end
+
+  # Write team info to disk
+  File.write team_path, team_output
+end
 
 # Fetch all organization repositories
 repos = client.organization_repositories org
