@@ -8,21 +8,42 @@ require 'yaml'
 require 'logger'
 require 'fileutils'
 require 'open3'
+require 'optparse'
 
 # gems
 require 'octokit'
 require 'dotenv'
 
+# variable to hold
+parse_options = {}
+
+optparse = OptionParser.new do |opts|
+  opts.on('-o', '--org ORGANIZATION', "Organization Name") do |f|
+    parse_options[:org] = f
+  end
+  opts.on("-v" "--version issues,wiki,repo", Array, "Version Issues, Wiki and/or Repo") do |list|
+     parse_options[:version] = list
+  end
+end
+
+optparse.parse!
+
 # Configuration
 Dotenv.load
 Octokit.auto_paginate = true
 token    = ENV["GITHUB_TOKEN"]
-org      = ARGV[0] || ENV["GITHUB_ORGANIZATION"]
+org      = parse_options[:org] || ENV["GITHUB_ORGANIZATION"]
 dest_dir = ENV["GITHUB_ARCHIVE_DIR"] || File.expand_path("./archive/#{org}")
+
 client   = Octokit::Client.new :access_token => token
 logger   = Logger.new(STDOUT)
 pwd      = Dir.pwd
 start    = Time.now
+
+# Timestamp each archive of the organization while still allowing custom archive directory in ENV
+if parse_options.has_key?(:version) == true and parse_options[:version].include?("repo")
+  dest_dir = "#{dest_dir}/#{start.strftime('%Y%m%dT%H%M%S')}"
+end
 
 # properties to extract from each issue for the archive
 issue_keys = [:title, :number, :state, :html_url, :created_at, :closed_at]
@@ -123,6 +144,11 @@ repos.each do |repo|
   if repo.has_wiki?
     wiki_clone_url = "https://#{token}:x-oauth-basic@github.com/#{org}/#{repo.name}.wiki.git"
     wiki_dir = File.expand_path "wiki", repo_dir
+
+    if parse_options.has_key?(:version) == true and parse_options[:version].include?("wiki")
+      wiki_dir = "#{wiki_dir}/#{start.strftime('%Y%m%dT%H%M%S')}"
+    end
+
     logger.info "    Archiving #{repo.name}'s Wiki to #{wiki_dir}"
     `git clone #{wiki_clone_url} #{wiki_dir}`
   end
@@ -147,7 +173,12 @@ repos.each do |repo|
 
   # Create an issues directory
   issues_dir = File.expand_path "issues", repo_dir
-  FileUtils.mkdir(issues_dir) unless Dir.exists? issues_dir
+
+  if parse_options.has_key?(:version) == true and parse_options[:version].include?("issues")
+    issues_dir = "#{issues_dir}/#{start.strftime('%Y%m%dT%H%M%S')}"
+  end
+
+  FileUtils.mkdir_p(issues_dir) unless Dir.exists? issues_dir
 
   # Pull down issues and pull requests
   issues = client.list_issues repo.full_name, :state => "all"
