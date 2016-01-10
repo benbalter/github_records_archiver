@@ -94,8 +94,6 @@ repos.each do |repo|
   # Create an issues directory
   issues_dir = File.expand_path "issues", repo_dir
 
-  # FileUtils.mkdir(issues_dir) unless Dir.exists? issues_dir
-
   if parse_options.has_key?(:version) == true and parse_options[:version].include?("issues")
     issues_dir = "#{issues_dir}/#{start.strftime('%Y%m%dT%H%M%S')}"
   end
