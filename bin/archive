@@ -19,6 +19,10 @@ Octokit.auto_paginate = true
 token    = ENV["GITHUB_TOKEN"]
 org      = ARGV[0] || ENV["GITHUB_ORGANIZATION"]
 dest_dir = ENV["GITHUB_ARCHIVE_DIR"] || File.expand_path("./archive/#{org}")
+
+# Timestamp each archive of the organization while still allowing custom archive directory in ENV
+dest_dir = "#{dest_dir}/#{Time.new.strftime('%Y%m%dT%H%M%S')}"
+
 client   = Octokit::Client.new :access_token => token
 logger   = Logger.new(STDOUT)
 pwd      = Dir.pwd
@@ -27,6 +31,10 @@ start    = Time.now
 # properties to extract from each issue for the archive
 issue_keys = [:title, :number, :state, :html_url, :created_at, :closed_at]
 milestone_keys = [:title, :number, :description, :state]
+team_keys = [:name, :slug, :description, :privacy, :permission]
+team_member_keys = [:login, :site_admin, :type]
+team_repo_keys = [:name, :full_name, :permissions]
+repo_info_keys = [:name, :full_name, :description, :private, :fork, :homepage, :forks_count, :stargazers_count, :watchers_count, :size]
 
 # Run a git command, piping output to stdout
 def git(*args)
@@ -36,6 +44,64 @@ end
 # Init the archive dir
 logger.info "Starting archive for #{org} in #{dest_dir}"
 FileUtils.mkdir_p dest_dir unless Dir.exists? dest_dir
+
+# Pull down Organization Teams and Team Members
+org_teams = client.organization_teams org
+
+# create folder for organizational team information
+teams_dir = File.expand_path "teams", dest_dir
+FileUtils.mkdir(teams_dir) unless Dir.exists? teams_dir
+
+# Loop through each team
+org_teams.each do |team|
+  # Create path for each team file. Use the team slug name to ensure no filesystem issues.
+  team_path = File.expand_path "#{team.slug}.md", teams_dir
+
+  # Pull out relavent team info from team_keys
+  team_info = {}
+  team_keys.each { |key| team_info[key.to_s] = team[key] }
+
+  # Begin to format team output
+  team_output = "---\n\n"
+  team_output << "# Team Info\n\n"
+  team_output << team_info.to_yaml
+
+  # Begin to format team repo output
+  team_output << "---\n\n"
+  team_output << "# Team Repos\n\n"
+
+  # Pull down team repositories
+  team_repos = client.team_repositories team.id
+  team_repos.each do |repo|
+    team_repo_info = {}
+    team_repo_keys.each { |key| team_repo_info[key.to_s] = repo[key] }
+
+    # Repo map permission hash from keys with symbols into strings
+    team_repo_info["permissions"] = team_repo_info["permissions"].map {|k,v| {k.to_s => v}}
+
+    # add team member info to team output
+    team_output << team_repo_info.to_yaml
+  end
+
+  # Begin to format team member output
+  team_output << "---\n\n"
+  team_output << "# Team Members\n\n"
+
+  # Pull down team members for current team
+  team_members = client.team_members team.id
+
+  # Pull out relavent team member info for each team member
+  team_members.each do |member|
+    team_member_info = {}
+    team_member_keys.each { |key| team_member_info[key.to_s] = member[key] }
+
+    # add team member info to team output
+    team_output << team_member_info.to_yaml
+  end
+
+  # Write team info to disk
+  File.write team_path, team_output
+end
 
 # Fetch all organization repositories
 repos = client.organization_repositories org
@@ -64,6 +130,24 @@ repos.each do |repo|
     logger.info "    Archiving #{repo.name}'s Wiki to #{wiki_dir}"
     `git clone #{wiki_clone_url} #{wiki_dir}`
   end
+
+  # create folder for repo info
+  repo_info_dir = File.expand_path "repo info", repo_dir
+  FileUtils.mkdir(repo_info_dir) unless Dir.exists? repo_info_dir
+
+  # Create path for repo info file.
+  repo_info_path = File.expand_path "repo_info.md", repo_info_dir
+
+  # Get relevant repo info
+  repo_info = repo.to_h.select {|k,v| repo_info_keys.include?(k) }.map{ |k, v| {k.to_s => v}}
+
+  # Begin to format repo info output
+  repo_info_output = "---\n\n"
+  repo_info_output << "# Repo Info\n\n"
+  repo_info_output << repo_info.to_yaml
+
+  # Write repo info to disk
+  File.write repo_info_path, repo_info_output
 
   # Create an issues directory
   issues_dir = File.expand_path "issues", repo_dir
