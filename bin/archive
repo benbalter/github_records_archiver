@@ -32,7 +32,7 @@ optparse.parse!
 Dotenv.load
 Octokit.auto_paginate = true
 token    = ENV["GITHUB_TOKEN"]
-org      = ARGV[0] || ENV["GITHUB_ORGANIZATION"]
+org      = parse_options[:org] || ENV["GITHUB_ORGANIZATION"]
 dest_dir = ENV["GITHUB_ARCHIVE_DIR"] || File.expand_path("./archive/#{org}")
 
 client   = Octokit::Client.new :access_token => token
