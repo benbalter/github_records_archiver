@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -ex
+
+#bundle exec rake spec
+bundle exec rubocop
+# bundle exec gem build github_records_archiver.gemspec
