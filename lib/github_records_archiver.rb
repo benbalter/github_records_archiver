@@ -18,15 +18,15 @@ Dotenv.load
 Octokit.auto_paginate = true
 
 module GitHubRecordsArchiver
-  autoload :DataHelper, 'github_records_archiver/data_helper'
-  autoload :Comment, 'github_records_archiver/comment'
+  autoload :DataHelper,    'github_records_archiver/data_helper'
+  autoload :Comment,       'github_records_archiver/comment'
   autoload :GitRepository, 'github_records_archiver/git_repository'
-  autoload :Issue, 'github_records_archiver/issue'
-  autoload :Organization, 'github_records_archiver/organization'
-  autoload :Repository, 'github_records_archiver/repository'
-  autoload :Team, 'github_records_archiver/team'
-  autoload :User, 'github_records_archiver/user'
-  autoload :Wiki, 'github_records_archiver/wiki'
+  autoload :Issue,         'github_records_archiver/issue'
+  autoload :Organization,  'github_records_archiver/organization'
+  autoload :Repository,    'github_records_archiver/repository'
+  autoload :Team,          'github_records_archiver/team'
+  autoload :User,          'github_records_archiver/user'
+  autoload :Wiki,          'github_records_archiver/wiki'
 
   class << self
     def token
