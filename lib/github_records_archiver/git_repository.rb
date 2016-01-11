@@ -24,7 +24,7 @@ module GitHubRecordsArchiver
     # Run a git command, piping output to stdout
     def git(*args)
       output, status = Open3.capture2e('git', *args)
-      raise GitError, output if status.exitstatus != 0
+      fail GitError, output if status.exitstatus != 0
       output
     end
   end
