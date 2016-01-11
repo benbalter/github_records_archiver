@@ -10,7 +10,7 @@ module GitHubRecordsArchiver
 
     def initialize(name_or_hash)
       if name_or_hash.is_a?(String)
-        @name = name
+        @name = name_or_hash
       else
         @data = name_or_hash.to_h
         @name = @data[:full_name]
@@ -22,7 +22,7 @@ module GitHubRecordsArchiver
     end
 
     def repo_dir
-      @repo_dir ||= File.expand_path name, GitHubRecordsArchiver.dest_dir
+      @repo_dir ||= File.expand_path data[:name], GitHubRecordsArchiver.dest_dir
     end
 
     def issues_dir

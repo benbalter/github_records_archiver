@@ -7,6 +7,7 @@ require 'logger'
 require 'fileutils'
 require 'open3'
 require 'fileutils'
+require 'open3'
 
 # gems
 require 'octokit'
@@ -17,6 +18,7 @@ Dotenv.load
 Octokit.auto_paginate = true
 
 module GitHubRecordsArchiver
+
   autoload :DataHelper, 'github_records_archiver/data_helper'
   autoload :Comment, 'github_records_archiver/comment'
   autoload :GitRepository, 'github_records_archiver/git_repository'
@@ -42,11 +44,6 @@ module GitHubRecordsArchiver
 
     def logger
       @logger ||= Logger.new(STDOUT)
-    end
-
-    # Run a git command, piping output to stdout
-    def git(*args)
-      system 'git ' + args.join(' ')
     end
   end
 end

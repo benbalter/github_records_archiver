@@ -4,9 +4,14 @@
 # Usage: ruby archive.rb
 
 require './lib/github_records_archiver'
+require 'parallel'
 
 def log(msg)
   GitHubRecordsArchiver.logger.info(msg)
+end
+
+def error(msg)
+  GitHubRecordsArchiver.logger.error(msg)
 end
 
 archiver = GitHubRecordsArchiver
@@ -18,27 +23,17 @@ org      = archiver::Organization.new org_name
 log "Starting archive for @#{org.name} in #{org.archive_dir}"
 
 log "Found #{org.teams.count} teams"
-org.teams.each do |team|
-  log "Archiving team #{team.data[:slug]} to #{team.path}"
-  team.archive
-end
+Parallel.each(org.teams, progress: "Archiving teams") { |team| team.archive }
 
 log "Found #{org.repos.count} repos"
-org.repos.each do |repo|
-  log "Archiving #{repo.name} to #{repo.repo_dir}"
-  repo.clone
-
-  unless repo.wiki.nil?
-    log "Archiving #{repo.name}'s Wiki to #{repo.wiki.repo_dir}"
-    repo.wiki.clone
-  end
-
-  log "Found #{repo.issues.count} issues for #{repo.name}"
-  repo.issues.each do |issue|
-    log "Archiving issue ##{issue.number} to #{issue.path}"
-    log "Found #{issue.comments.count} comments for issue ##{issue.number}"
-
-    issue.archive
+Parallel.each(org.repos, progress: "Archiving repos") do |repo|
+  begin
+    repo.clone
+    repo.wiki.clone unless repo.wiki.nil?
+    Parallel.each(repo.issues) { |issue| issue.archive }
+  rescue GitHubRecordsArchiver::GitError => e
+    error "Failed to archive #{repo.name}"
+    error e.message
   end
 end
 

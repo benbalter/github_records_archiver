@@ -20,7 +20,7 @@ module GitHubRecordsArchiver
     private
 
     def clone_url
-      @clone_url ||= repository.clone_url.gsub('.git', '.wiki.git')
+      @clone_url ||= repository.clone_url.gsub(/\.git\z/, '.wiki.git')
     end
   end
 end
