@@ -7,6 +7,7 @@ Backs up a GitHub organization's repositories and all their associated informati
 * Git data (change history, tags, branches, etc.)
 * Wikis (including change history)
 * Issues and pull request (including comments, current state, etc.)
+* Teams (including members and repository permissions)
 
 ## Requirements
 
@@ -45,4 +46,4 @@ Within each folder will be the repository content as a git repository.
 
 If the repository has a Wiki, the wiki will be cloned as a `wiki` subfolder, as a Git repository.
 
-If the repository has issues or pull requests, it will create an `issues` sub-folder with each issue and its associated comments stored as individual markdown files.
+If the repository has issues or pull requests, it will create an `issues` sub-folder with each issue and its associated comments stored as both markdown (human readable) and JSON (machine readable).
