@@ -41,9 +41,5 @@ module GitHubRecordsArchiver
     def dest_dir
       ENV['GITHUB_ARCHIVE_DIR'] || File.expand_path('./archive', Dir.pwd)
     end
-
-    def logger
-      @logger ||= Logger.new(STDOUT)
-    end
   end
 end

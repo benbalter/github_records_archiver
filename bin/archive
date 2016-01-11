@@ -6,12 +6,16 @@
 require './lib/github_records_archiver'
 require 'parallel'
 
+def logger
+  @logger ||= Logger.new(STDOUT)
+end
+
 def log(msg)
-  GitHubRecordsArchiver.logger.info(msg)
+  logger.info(msg)
 end
 
 def error(msg)
-  GitHubRecordsArchiver.logger.error(msg)
+  logger.error(msg)
 end
 
 archiver = GitHubRecordsArchiver
