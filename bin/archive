@@ -5,11 +5,6 @@
 
 require './lib/github_records_archiver'
 
-# properties to extract from each issue for the archive
-# milestone_keys = [:title, :number, :description, :state]
-# team_member_keys = [:login, :site_admin, :type]
-# team_repo_keys = [:name, :full_name, :permissions]
-
 def log(msg)
   GitHubRecordsArchiver.logger.info(msg)
 end
