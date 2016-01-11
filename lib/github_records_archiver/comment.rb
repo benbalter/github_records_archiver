@@ -3,6 +3,8 @@ module GitHubRecordsArchiver
     attr_reader :repository
     attr_reader :id
 
+    include DataHelper
+
     def initialize(repo, id)
       repo = Repository.new(repo) if repo.is_a? String
       @repository = repo
@@ -17,13 +19,13 @@ module GitHubRecordsArchiver
 
     def data
       @data ||= begin
-        GitHubRecordsArchiver.client.issue_comment(repository[:full_name], number)
+        GitHubRecordsArchiver.client.issue_comment(repository.full_name, number)
       end
     end
 
     def to_s
-      output = "@#{data[:user][:login]} at #{data[:created_at]} wrote:\n\n"
-      output << data[:body]
+      output = "@#{user[:login]} at #{created_at} wrote:\n\n"
+      output << body
       output
     end
 

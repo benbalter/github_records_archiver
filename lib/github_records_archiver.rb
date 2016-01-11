@@ -17,6 +17,7 @@ Dotenv.load
 Octokit.auto_paginate = true
 
 module GitHubRecordsArchiver
+  autoload :DataHelper, 'github_records_archiver/data_helper'
   autoload :Comment, 'github_records_archiver/comment'
   autoload :GitRepository, 'github_records_archiver/git_repository'
   autoload :Issue, 'github_records_archiver/issue'

@@ -3,6 +3,8 @@ module GitHubRecordsArchiver
     attr_reader :login
     alias_method :name, :login
 
+    include DataHelper
+
     KEYS = [:login, :site_admin, :type]
 
     def initialize(login_or_hash)

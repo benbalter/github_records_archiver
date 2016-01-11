@@ -2,8 +2,14 @@ module GitHubRecordsArchiver
   class Organization
     attr_reader :name
 
+    include DataHelper
+
     def initialize(name)
       @name = name
+    end
+
+    def data
+      @data ||= GitHubRecordsArchiver.client.organization name
     end
 
     def repositories

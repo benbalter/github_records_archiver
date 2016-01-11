@@ -1,15 +1,19 @@
 module GitHubRecordsArchiver
   class Repository < GitRepository
-    attr_accessor :name
+    attr_reader :name
+    include DataHelper
 
-    KEYS = [:name, :full_name, :description, :private, :fork, :homepage, :forks_count, :stargazers_count, :watchers_count, :size]
+    KEYS = [
+      :name, :full_name, :description, :private, :fork, :homepage,
+      :forks_count, :stargazers_count, :watchers_count, :size
+    ]
 
     def initialize(name_or_hash)
       if name_or_hash.is_a?(String)
         @name = name
       else
         @data = name_or_hash.to_h
-        @name = data[:full_name]
+        @name = @data[:full_name]
       end
     end
 
@@ -30,7 +34,7 @@ module GitHubRecordsArchiver
     end
 
     def wiki
-      @wiki ||= Wiki.new(self) if data[:has_wiki]
+      @wiki ||= Wiki.new(self) if has_wiki
     end
 
     def issues

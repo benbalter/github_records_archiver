@@ -3,6 +3,8 @@ module GitHubRecordsArchiver
     attr_reader :id
     attr_reader :organization
 
+    include DataHelper
+
     KEYS = [:name, :slug, :description, :privacy, :permission]
 
     def initialize(org, id)
