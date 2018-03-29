@@ -6,8 +6,6 @@ require 'json'
 require 'logger'
 require 'fileutils'
 require 'open3'
-require 'fileutils'
-require 'open3'
 
 # gems
 require 'octokit'
