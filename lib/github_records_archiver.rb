@@ -24,6 +24,7 @@ module GitHubRecordsArchiver
   autoload :Repository,    'github_records_archiver/repository'
   autoload :Team,          'github_records_archiver/team'
   autoload :User,          'github_records_archiver/user'
+  autoload :VERSION,       'github_records_archiver/version'
   autoload :Wiki,          'github_records_archiver/wiki'
 
   class << self

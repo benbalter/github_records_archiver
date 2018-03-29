@@ -22,4 +22,8 @@ RSpec.describe GitHubRecordsArchiver do
       expect(described_class.dest_dir).to eql('./output')
     end
   end
+
+  it 'exposes the version' do
+    expect(described_class::VERSION).to match(/\d\.\d\.\d/)
+  end
 end

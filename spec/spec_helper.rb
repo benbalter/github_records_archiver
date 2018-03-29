@@ -1,6 +1,6 @@
 require 'webmock'
-WebMock.disable_net_connect!
-
+require 'webmock/rspec'
+require 'addressable/uri'
 require_relative '../lib/github_records_archiver'
 
 RSpec.configure do |config|
@@ -12,6 +12,7 @@ RSpec.configure do |config|
   config.default_formatter = 'doc' if config.files_to_run.one?
 
   Kernel.srand config.seed
+  WebMock.disable_net_connect!
 end
 
 def with_env(key, value)
@@ -19,4 +20,22 @@ def with_env(key, value)
   ENV[key] = value
   yield
   ENV[key] = old_env
+end
+
+def fixture_path(fixture)
+  File.join(__dir__, 'fixtures', "#{fixture}.json")
+end
+
+def fixture_contents(fixture)
+  File.read fixture_path(fixture)
+end
+
+def stub_api_request(fixture, args = nil)
+  uri = Addressable::URI.join('https://api.github.com', fixture)
+  uri.query_values = args if args
+  stub_request(:get, uri).to_return(
+    status: 200,
+    body: fixture_contents(fixture),
+    headers: { 'Content-Type' => 'application/json' }
+  )
 end

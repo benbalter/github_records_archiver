@@ -29,6 +29,8 @@ module GitHubRecordsArchiver
       end
     end
 
+    private
+
     def archive_dir
       @archive_dir ||= begin
         dir = File.expand_path name, GitHubRecordsArchiver.dest_dir

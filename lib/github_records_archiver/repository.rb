@@ -21,18 +21,6 @@ module GitHubRecordsArchiver
       @data ||= GitHubRecordsArchiver.client.repository(name)
     end
 
-    def repo_dir
-      @repo_dir ||= File.expand_path data[:name], GitHubRecordsArchiver.dest_dir
-    end
-
-    def issues_dir
-      @issues_dir ||= begin
-        dir = File.expand_path 'issues', repo_dir
-        FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
-        dir
-      end
-    end
-
     def wiki
       @wiki ||= Wiki.new(self) if has_wiki
     end
@@ -45,6 +33,18 @@ module GitHubRecordsArchiver
     end
 
     private
+
+    def repo_dir
+      @repo_dir ||= File.expand_path data[:name], GitHubRecordsArchiver.dest_dir
+    end
+
+    def issues_dir
+      @issues_dir ||= begin
+        dir = File.expand_path 'issues', repo_dir
+        FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
+        dir
+      end
+    end
 
     def clone_url
       replacement = "https://#{GitHubRecordsArchiver.token}:x-oauth-basic@"
