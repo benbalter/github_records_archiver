@@ -7,5 +7,7 @@ gem 'ruby-progressbar'
 
 group :development do
   gem 'pry'
+  gem 'rspec'
   gem 'rubocop'
+  gem 'webmock'
 end

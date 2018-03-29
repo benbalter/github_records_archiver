@@ -1,3 +1,4 @@
 /.env
 /archive
 Gemfile.lock
+spec/examples.txt
