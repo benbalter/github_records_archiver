@@ -18,7 +18,7 @@ module GitHubRecordsArchiver
         repos.map { |hash| Repository.new(hash) }
       end
     end
-    alias_method :repos, :repositories
+    alias repos repositories
 
     def teams
       @teams ||= begin

@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'octokit'
 gem 'dotenv'
+gem 'octokit'
 gem 'parallel'
 gem 'ruby-progressbar'
 
 group :development do
-  gem 'rubocop'
   gem 'pry'
+  gem 'rubocop'
 end

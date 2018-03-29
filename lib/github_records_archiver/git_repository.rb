@@ -12,19 +12,19 @@ module GitHubRecordsArchiver
     end
 
     def repo_dir
-      fail 'Not implemented'
+      raise 'Not implemented'
     end
 
     private
 
     def clone_url
-      fail 'Not implemented'
+      raise 'Not implemented'
     end
 
     # Run a git command, piping output to stdout
     def git(*args)
       output, status = Open3.capture2e('git', *args)
-      fail GitError, output if status.exitstatus != 0
+      raise GitError, output if status.exitstatus != 0
       output
     end
   end

@@ -3,10 +3,10 @@ module GitHubRecordsArchiver
     attr_reader :name
     include DataHelper
 
-    KEYS = [
-      :name, :full_name, :description, :private, :fork, :homepage,
-      :forks_count, :stargazers_count, :watchers_count, :size
-    ]
+    KEYS = %i[
+      name full_name description private fork homepage
+      forks_count stargazers_count watchers_count size
+    ].freeze
 
     def initialize(name_or_hash)
       if name_or_hash.is_a?(String)

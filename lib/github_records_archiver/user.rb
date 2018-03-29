@@ -1,11 +1,11 @@
 module GitHubRecordsArchiver
   class User
     attr_reader :login
-    alias_method :name, :login
+    alias name login
 
     include DataHelper
 
-    KEYS = [:login, :site_admin, :type]
+    KEYS = %i[login site_admin type].freeze
 
     def initialize(login_or_hash)
       if login_or_hash.is_a? String

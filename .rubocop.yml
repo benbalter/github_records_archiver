@@ -5,6 +5,6 @@ AllCops:
 Style/Documentation:
   Enabled: false
 
-Lint/EndAlignment:
+Lint/EnforcedStyleAlignWith:
   AlignWith: variable
   AutoCorrect: true

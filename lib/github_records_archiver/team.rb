@@ -5,7 +5,7 @@ module GitHubRecordsArchiver
 
     include DataHelper
 
-    KEYS = [:name, :slug, :description, :privacy, :permission]
+    KEYS = %i[name slug description privacy permission].freeze
 
     def initialize(org, id)
       org = Organization.new(org) if org.is_a? String

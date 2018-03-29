@@ -5,7 +5,7 @@ module GitHubRecordsArchiver
 
     include DataHelper
 
-    KEYS = [:title, :number, :state, :html_url, :created_at, :closed_at]
+    KEYS = %i[title number state html_url created_at closed_at].freeze
 
     def initialize(repository: nil, number: nil)
       repository = Repository.new(repository) if repository.is_a? String
@@ -22,7 +22,7 @@ module GitHubRecordsArchiver
     def data
       @data ||= GitHubRecordsArchiver.client.issue repository.name, number
     end
-    alias_method :to_h, :data
+    alias to_h data
 
     def comments
       @comments ||= begin

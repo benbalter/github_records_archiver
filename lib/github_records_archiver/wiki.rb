@@ -5,11 +5,11 @@ module GitHubRecordsArchiver
     include DataHelper
 
     def initialize(repository)
-      if repository.is_a?(String)
-        @repository = Repository.new(repository)
-      else
-        @repository = repository
-      end
+      @repository = if repository.is_a?(String)
+                      Repository.new(repository)
+                    else
+                      repository
+                    end
     end
 
     def repo_dir
