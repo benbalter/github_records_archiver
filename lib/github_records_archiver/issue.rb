@@ -26,7 +26,7 @@ module GitHubRecordsArchiver
 
     def comments
       @comments ||= begin
-        return [] if data['comments'] == 0
+        return [] if data['comments'].zero?
         client = GitHubRecordsArchiver.client
         comments = client.issue_comments repository.full_name, number
         comments.map { |hash| Comment.from_hash(repository, hash) }

@@ -4,7 +4,3 @@ AllCops:
 
 Style/Documentation:
   Enabled: false
-
-Lint/EnforcedStyleAlignWith:
-  AlignWith: variable
-  AutoCorrect: true

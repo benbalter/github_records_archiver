@@ -4,7 +4,7 @@ module GitHubRecordsArchiver
 
     def method_missing(method_sym, *arguments, &block)
       return data[method_sym] if data_key?(method_sym)
-      if method_sym.to_s =~ /\?\z/
+      if method_sym.to_s.end_with? '?'
         method_sym = method_sym.to_s.gsub(/\?\z/, '').to_sym
         send(method_sym).to_s.empty?
       else
