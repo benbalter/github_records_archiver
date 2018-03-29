@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - archive/**/*
+    - vendor/**/*
 
 Style/Documentation:
   Enabled: false
