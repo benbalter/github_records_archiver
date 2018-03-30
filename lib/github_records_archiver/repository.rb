@@ -22,7 +22,7 @@ module GitHubRecordsArchiver
     end
 
     def wiki
-      @wiki ||= Wiki.new(self) if has_wiki
+      @wiki ||= Wiki.new(self) if has_wiki?
     end
 
     def issues
@@ -32,18 +32,18 @@ module GitHubRecordsArchiver
       end
     end
 
-    private
-
-    def repo_dir
-      @repo_dir ||= File.expand_path data[:name], GitHubRecordsArchiver.dest_dir
-    end
-
     def issues_dir
       @issues_dir ||= begin
         dir = File.expand_path 'issues', repo_dir
         FileUtils.mkdir_p(dir) unless Dir.exist?(dir)
         dir
       end
+    end
+
+    private
+
+    def repo_dir
+      @repo_dir ||= File.expand_path data[:name], GitHubRecordsArchiver.dest_dir
     end
 
     def clone_url

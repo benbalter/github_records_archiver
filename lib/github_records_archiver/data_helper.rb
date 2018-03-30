@@ -19,9 +19,10 @@ module GitHubRecordsArchiver
       end
     end
 
-    def as_json
+    def to_h
       data.to_h
     end
+    alias as_json to_h
 
     def to_json
       as_json.to_json

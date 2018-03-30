@@ -22,11 +22,10 @@ module GitHubRecordsArchiver
     def data
       @data ||= GitHubRecordsArchiver.client.issue repository.name, number
     end
-    alias to_h data
 
     def comments
       @comments ||= begin
-        return [] if data['comments'].zero?
+        return [] if data[:comments].nil? || data[:comments].zero?
         client = GitHubRecordsArchiver.client
         comments = client.issue_comments repository.full_name, number
         comments.map { |hash| Comment.from_hash(repository, hash) }
