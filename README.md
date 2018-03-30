@@ -22,11 +22,14 @@ If you have Ruby installed, simply run `gem install github_records_archiver` to 
 
 ## Basic usage
 
-`github_records_archiver archive ORGANIZATION --token PERSONAL_ACCESS_TOKEN`
+```shell
+$ github_records_archiver archive ORGANIZATION --token PERSONAL_ACCESS_TOKEN`
+```
+Alternatively, you could pass the personal access token as the `GITHUB_TOKEN` environmental variable:
 
-Alternatively, you could pass the personalo access token as the `GITHUB_TOKEN` environmental variable:
-
-`GITHUB_TOKEN=1234 github_records_archiver archive ORGANIZATION`
+```shell
+$ GITHUB_TOKEN=1234 github_records_archiver archive ORGANIZATION`
+```
 
 ## Output
 
