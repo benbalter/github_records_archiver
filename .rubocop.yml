@@ -2,7 +2,8 @@ AllCops:
   Exclude:
     - archive/**/*
     - vendor/**/*
-
+    - bin/github-records-archiver
+    
 Style/Documentation:
   Enabled: false
 

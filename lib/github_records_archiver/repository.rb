@@ -40,15 +40,13 @@ module GitHubRecordsArchiver
       end
     end
 
-    private
-
-    def repo_dir
-      @repo_dir ||= File.expand_path full_name, GitHubRecordsArchiver.dest_dir
-    end
-
     def clone_url
       replacement = "https://#{GitHubRecordsArchiver.token}:x-oauth-basic@"
       data[:clone_url].gsub(%r{https?://}, replacement)
+    end
+
+    def repo_dir
+      @repo_dir ||= File.expand_path full_name, GitHubRecordsArchiver.dest_dir
     end
   end
 end

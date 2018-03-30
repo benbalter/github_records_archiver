@@ -1,6 +1,8 @@
 RSpec.describe GitHubRecordsArchiver do
-  before do
-    described_class.instance_variable_set '@client', nil
+  after do
+    %w[token client dest_dir].each do |option|
+      described_class.instance_variable_set "@#{option}", nil
+    end
   end
 
   it 'returns the token' do
@@ -19,12 +21,6 @@ RSpec.describe GitHubRecordsArchiver do
   it 'sets the default destination directory' do
     path = File.expand_path '../archive', __dir__
     expect(described_class.dest_dir).to eql(path)
-  end
-
-  it 'respects the destination dir set via env var' do
-    with_env 'GITHUB_ARCHIVE_DIR', './output' do
-      expect(described_class.dest_dir).to eql('./output')
-    end
   end
 
   it 'exposes the version' do

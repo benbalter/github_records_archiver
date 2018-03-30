@@ -20,29 +20,59 @@ Backs up a GitHub organization's repositories and all their associated informati
 
 If you have Ruby installed, simply run `gem install github_records_archiver` to install.
 
-## Usage
+## Basic usage
 
-`github_records_archiver [ORGANIZATION]`
+`github_records_archiver archive ORGANIZATION --token PERSONAL_ACCESS_TOKEN`
 
-You'll want to set the following environmental variable:
+Alternatively, you could pass the personalo access token as the `GITHUB_TOKEN` environmental variable:
 
-* `GITHUB_TOKEN` - Your personal access token
-
-You *may* set the following environmental variables:
-
-* `GITHUB_ARCHIVE_DIR` to specify the output directory. It will default to `./archive`.
-* `GITHUB_ORGANIZATION` - The organization to archive if none is passed as an argument.
-
-These can be passed as `GITHUB_TOKEN=123ABC GITHUB_ORGANIZATION=whitehouse github_records_archiver`.
-
-You can also add the values to a `.env` file in the project's root directory, which will be automatically set as environmental variables.
+`GITHUB_TOKEN=1234 github_records_archiver archive ORGANIZATION`
 
 ## Output
 
-The script will create an `archive` directory, with one folder for each repository.
+The script will create an `archive` directory, with one folder for each organization.
 
-Within each folder will be the repository content as a git repository.
+Within each organization folder, there will be one folder per repository.
+
+Within each repository folder will be the repository content as a git repository.
 
 If the repository has a Wiki, the wiki will be cloned as a `wiki` subfolder, as a Git repository.
 
 If the repository has issues or pull requests, it will create an `issues` sub-folder with each issue and its associated comments stored as both markdown (human readable) and JSON (machine readable).
+
+Example output:
+
+```
+├─ archive
+├─── organization
+├──── repository
+├────── README.md
+├────── LICENSE.txt
+├──── wiki
+├────── wiki-page.md
+├──── issues
+├────── 1.md
+├────── 1.json
+├─── another organization
+├──── another-repository
+├────── README.md
+├────── LICENSE.txt
+├──── wiki
+├────── wiki-page.md
+├──── issues
+├────── 1.md
+├────── 1.json
+```
+
+## Advanced usage
+
+You may set the following flags:
+
+* `--dest-dir` - the destination archive directory, defaults to `./archive`
+* `--verbose` - verbose output while archiving
+
+Additionally, the following commands are also available:
+
+* `delete [ORGANIZATION]` - delete the entire archive directory or an organization's archive
+* `help` - display help information
+* `version` - display the GitHub Record Archiver version

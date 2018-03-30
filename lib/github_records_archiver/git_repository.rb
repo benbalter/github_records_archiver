@@ -3,11 +3,13 @@ module GitHubRecordsArchiver
 
   class GitRepository
     def clone
-      if Dir.exist? repo_dir # Repo already exists, just pull new objects
+      # Repo already exists, just pull new objects
+      if Dir.exist? File.join(repo_dir, '.git')
         Dir.chdir repo_dir do
           git 'pull'
         end
-      else # Clone Git content from scratch
+      else
+        # Clone Git content from scratch
         git 'clone', clone_url, repo_dir
       end
     end
@@ -43,8 +45,14 @@ module GitHubRecordsArchiver
     # Run a git command, piping output to stdout
     def git(*args)
       output, status = Open3.capture2e('git', *args)
+      cmd = "git #{args.join(' ')}"
+      cmd << " in #{Dir.pwd}" if args == ['pull']
+      GitHubRecordsArchiver.verbose_status 'Git command:', cmd
       return false if empty_repo?(output) || wiki_does_not_exist?(output)
-      raise GitError, output if status.exitstatus != 0
+      if status.exitstatus != 0
+        output = GitHubRecordsArchiver.remove_token(output)
+        GitHubRecordsArchiver.shell.say_status 'Git Error', output, :red
+      end
       output
     end
   end

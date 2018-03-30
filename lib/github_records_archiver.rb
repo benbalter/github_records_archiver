@@ -1,18 +1,14 @@
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 
-# stdlib
 require 'yaml'
 require 'json'
 require 'logger'
 require 'fileutils'
 require 'open3'
-
-# gems
+require 'thor'
 require 'octokit'
-require 'dotenv'
+require 'dotenv/load'
 
-# Configuration
-Dotenv.load
 Octokit.auto_paginate = true
 
 module GitHubRecordsArchiver
@@ -28,8 +24,10 @@ module GitHubRecordsArchiver
   autoload :Wiki,          'github_records_archiver/wiki'
 
   class << self
+    attr_writer :token, :dest_dir, :verbose, :shell
+
     def token
-      ENV['GITHUB_TOKEN']
+      @token ||= ENV['GITHUB_TOKEN']
     end
 
     def client
@@ -37,7 +35,25 @@ module GitHubRecordsArchiver
     end
 
     def dest_dir
-      ENV['GITHUB_ARCHIVE_DIR'] || File.expand_path('./archive', Dir.pwd)
+      @dest_dir ||= File.expand_path('./archive', Dir.pwd)
+    end
+
+    def verbose
+      @verbose ||= false
+    end
+    alias verbose? verbose
+
+    def shell
+      @shell ||= Thor::Base.shell.new
+    end
+
+    def verbose_status(status, message, color = :white)
+      return unless verbose?
+      shell.say_status status, remove_token(message), color
+    end
+
+    def remove_token(string)
+      string.gsub(GitHubRecordsArchiver.token, '<GITHUB_TOKEN>')
     end
   end
 end

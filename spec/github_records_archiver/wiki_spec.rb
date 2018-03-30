@@ -29,7 +29,7 @@ RSpec.describe GitHubRecordsArchiver::Wiki do
   end
 
   it 'builds the clone URL' do
-    expected = "https://github.com/#{repo}.wiki.git"
+    expected = "https://TEST_TOKEN:x-oauth-basic@github.com/#{repo}.wiki.git"
     expect(subject.send(:clone_url)).to eql(expected)
   end
 end

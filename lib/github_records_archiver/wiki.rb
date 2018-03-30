@@ -13,8 +13,7 @@ module GitHubRecordsArchiver
     end
 
     def repo_dir
-      name = "#{repository.full_name}/wiki"
-      @repo_dir ||= File.expand_path name, GitHubRecordsArchiver.dest_dir
+      @repo_dir ||= File.join repository.repo_dir, 'wiki'
     end
 
     private
