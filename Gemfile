@@ -1,14 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'dotenv'
-gem 'octokit'
-gem 'parallel'
-gem 'ruby-progressbar'
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
-group :development do
-  gem 'addressable'
-  gem 'pry'
-  gem 'rspec'
-  gem 'rubocop'
-  gem 'webmock'
-end
+gemspec

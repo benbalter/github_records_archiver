@@ -4,4 +4,4 @@ set -ex
 
 bundle exec rspec
 bundle exec rubocop
-# bundle exec gem build github_records_archiver.gemspec
+bundle exec gem build github_records_archiver.gemspec
