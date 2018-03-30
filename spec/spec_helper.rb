@@ -1,3 +1,6 @@
+require 'coveralls'
+Coveralls.wear!
+
 require 'webmock'
 require 'webmock/rspec'
 require 'addressable/uri'
