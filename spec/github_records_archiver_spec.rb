@@ -1,8 +1,15 @@
 RSpec.describe GitHubRecordsArchiver do
-  after do
-    %w[token client dest_dir].each do |option|
-      described_class.instance_variable_set "@#{option}", nil
+  before do
+    %w[client dest_dir token].each do |option|
+      described_class.public_send "#{option}=", nil
     end
+  end
+
+  after do
+    %w[client dest_dir].each do |option|
+      described_class.public_send "#{option}=", nil
+    end
+    described_class.token = ENV['GITHUB_TOKEN'] = 'TEST_TOKEN'
   end
 
   it 'returns the token' do

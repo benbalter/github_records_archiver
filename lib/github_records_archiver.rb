@@ -24,7 +24,7 @@ module GitHubRecordsArchiver
   autoload :Wiki,          'github_records_archiver/wiki'
 
   class << self
-    attr_writer :token, :dest_dir, :verbose, :shell
+    attr_writer :token, :dest_dir, :verbose, :shell, :client
 
     def token
       @token ||= ENV['GITHUB_TOKEN']
