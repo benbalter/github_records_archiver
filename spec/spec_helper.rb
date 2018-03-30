@@ -22,8 +22,12 @@ def with_env(key, value)
   ENV[key] = old_env
 end
 
+def fixture_dir
+  File.join(__dir__, 'fixtures')
+end
+
 def fixture_path(fixture)
-  File.join(__dir__, 'fixtures', "#{fixture}.json")
+  File.join(fixture_dir, "#{fixture}.json")
 end
 
 def fixture_contents(fixture)

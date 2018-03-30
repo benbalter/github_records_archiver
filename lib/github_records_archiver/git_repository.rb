@@ -4,8 +4,9 @@ module GitHubRecordsArchiver
   class GitRepository
     def clone
       if Dir.exist? repo_dir # Repo already exists, just pull new objects
-        Dir.chdir repo_dir
-        git 'pull'
+        Dir.chdir repo_dir do
+          git 'pull'
+        end
       else # Clone Git content from scratch
         git 'clone', clone_url, repo_dir
       end

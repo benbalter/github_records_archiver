@@ -1,5 +1,5 @@
 RSpec.describe GitHubRecordsArchiver::DataHelper do
-  class SpecHelper
+  class DataHelperSpec
     include GitHubRecordsArchiver::DataHelper
 
     def data
@@ -9,7 +9,7 @@ RSpec.describe GitHubRecordsArchiver::DataHelper do
     end
   end
 
-  subject { SpecHelper.new }
+  subject { DataHelperSpec.new }
 
   it 'returns values' do
     expect(subject).to respond_to(:foo)
