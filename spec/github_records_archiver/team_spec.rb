@@ -84,19 +84,18 @@ EXPECTED
     expect(data['name']).to eql('Justice League')
   end
 
-  it "builds the path" do
+  it 'builds the path' do
     expected = File.expand_path "../../archive/#{org}/teams/#{slug}.md", __dir__
     expect(path).to eql(expected)
   end
 
-  context "archiving" do
-
+  context 'archiving' do
     before do
       FileUtils.rm_rf path
       subject.archive
     end
 
-    it "archives" do
+    it 'archives' do
       expect(File.exist?(path)).to be_truthy
       contents = File.read(path)
       expect(contents).to match(/name: Justice League/)

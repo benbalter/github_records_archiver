@@ -27,4 +27,9 @@ RSpec.describe GitHubRecordsArchiver::Wiki do
     path = File.expand_path "../../archive/#{repo}/wiki", __dir__
     expect(subject.repo_dir).to eql(path)
   end
+
+  it 'builds the clone URL' do
+    expected = "https://github.com/#{repo}.wiki.git"
+    expect(subject.send(:clone_url)).to eql(expected)
+  end
 end
