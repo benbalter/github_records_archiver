@@ -1,6 +1,6 @@
 # GitHub Records Archiver
 
-[![Build Status](https://travis-ci.org/benbalter/github-records-archiver.svg?branch=master)](https://travis-ci.org/benbalter/github-records-archiver) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Build Status](https://travis-ci.org/benbalter/github-records-archiver.svg?branch=master)](https://travis-ci.org/benbalter/github-records-archiver) [![Gem Version](https://badge.fury.io/rb/github_records_archiver.svg)](http://badge.fury.io/rb/github_records_archiver) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 Backs up a GitHub organization's repositories and all their associated information for archival purposes.
 
