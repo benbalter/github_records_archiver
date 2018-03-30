@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'github_records_archiver/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'github-records-archiver'
+  spec.name          = 'github_records_archiver'
   spec.version       = GitHubRecordsArchiver::VERSION
   spec.authors       = ['Ben Balter']
   spec.email         = ['ben.balter@github.com']
