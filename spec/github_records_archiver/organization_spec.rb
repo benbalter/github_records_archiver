@@ -27,4 +27,16 @@ RSpec.describe GitHubRecordsArchiver::Organization do
     expect(subject.teams).to be_an(Array)
     expect(subject.teams.first).to be_a(GitHubRecordsArchiver::Team)
   end
+
+  it 'returns the archive dir' do
+    path = File.expand_path "../../archive/#{org_name}", __dir__
+    expect(subject.archive_dir).to eql(path)
+    expect(Dir.exist?(subject.archive_dir)).to be_truthy
+  end
+
+  it 'returns the teams dir' do
+    path = File.expand_path "../../archive/#{org_name}/teams", __dir__
+    expect(subject.teams_dir).to eql(path)
+    expect(Dir.exist?(subject.teams_dir)).to be_truthy
+  end
 end

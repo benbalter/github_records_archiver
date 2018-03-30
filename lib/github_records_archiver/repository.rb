@@ -43,7 +43,7 @@ module GitHubRecordsArchiver
     private
 
     def repo_dir
-      @repo_dir ||= File.expand_path data[:name], GitHubRecordsArchiver.dest_dir
+      @repo_dir ||= File.expand_path full_name, GitHubRecordsArchiver.dest_dir
     end
 
     def clone_url

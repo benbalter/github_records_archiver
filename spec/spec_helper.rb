@@ -6,6 +6,8 @@ require 'webmock/rspec'
 require 'addressable/uri'
 require_relative '../lib/github_records_archiver'
 
+ENV['GITHUB_TOKEN'] = 'TEST_TOKEN'
+
 RSpec.configure do |config|
   config.example_status_persistence_file_path = 'spec/examples.txt'
   config.disable_monkey_patching!
