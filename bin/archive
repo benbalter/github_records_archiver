@@ -33,7 +33,7 @@ log "Found #{org.repos.count} repos"
 Parallel.each(org.repos, progress: 'Archiving repos') do |repo|
   begin
     repo.clone
-    repo.wiki.clone unless repo.wiki.nil?
+    repo.wiki.clone if repo.has_wiki?
     Parallel.each(repo.issues, &:archive)
   rescue GitHubRecordsArchiver::GitError => e
     error "Failed to archive #{repo.name}"

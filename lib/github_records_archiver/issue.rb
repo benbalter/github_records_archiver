@@ -22,19 +22,14 @@ module GitHubRecordsArchiver
     def data
       @data ||= GitHubRecordsArchiver.client.issue repository.name, number
     end
-    alias to_h data
 
     def comments
       @comments ||= begin
-        return [] if data['comments'].zero?
+        return [] if data[:comments].nil? || data[:comments].zero?
         client = GitHubRecordsArchiver.client
         comments = client.issue_comments repository.full_name, number
         comments.map { |hash| Comment.from_hash(repository, hash) }
       end
-    end
-
-    def path(ext = 'md')
-      File.expand_path "#{number}.#{ext}", repository.issues_dir
     end
 
     def to_s
@@ -44,8 +39,8 @@ module GitHubRecordsArchiver
       md
     end
 
-    def to_json
-      data.to_h.merge('comments' => comments.map(&:to_json)).to_json
+    def as_json
+      data.to_h.merge('comments' => comments.map(&:as_json))
     end
 
     def archive
@@ -54,6 +49,10 @@ module GitHubRecordsArchiver
     end
 
     private
+
+    def path(ext = 'md')
+      File.expand_path "#{number}.#{ext}", repository.issues_dir
+    end
 
     def meta_for_markdown
       meta = {}

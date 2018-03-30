@@ -19,7 +19,7 @@ module GitHubRecordsArchiver
 
     def data
       @data ||= begin
-        GitHubRecordsArchiver.client.issue_comment(repository.full_name, number)
+        GitHubRecordsArchiver.client.issue_comment(repository.full_name, id)
       end
     end
 
@@ -27,10 +27,6 @@ module GitHubRecordsArchiver
       output = "@#{user[:login]} at #{created_at} wrote:\n\n"
       output << body
       output
-    end
-
-    def to_json
-      data.to_json
     end
   end
 end

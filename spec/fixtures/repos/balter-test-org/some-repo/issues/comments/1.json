@@ -1,0 +1,27 @@
+{
+  "id": 1,
+  "url": "https://api.github.com/repos/balter-test-org/some-repo/issues/comments/1",
+  "html_url": "https://github.com/balter-test-org/some-repo/issues/1347#issuecomment-1",
+  "body": "Me too",
+  "user": {
+    "login": "balter-test-org",
+    "id": 1,
+    "avatar_url": "https://github.com/images/error/balter-test-org_happy.gif",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/balter-test-org",
+    "html_url": "https://github.com/balter-test-org",
+    "followers_url": "https://api.github.com/users/balter-test-org/followers",
+    "following_url": "https://api.github.com/users/balter-test-org/following{/other_user}",
+    "gists_url": "https://api.github.com/users/balter-test-org/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/balter-test-org/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/balter-test-org/subscriptions",
+    "organizations_url": "https://api.github.com/users/balter-test-org/orgs",
+    "repos_url": "https://api.github.com/users/balter-test-org/repos",
+    "events_url": "https://api.github.com/users/balter-test-org/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/balter-test-org/received_events",
+    "type": "User",
+    "site_admin": false
+  },
+  "created_at": "2011-04-14T16:00:49Z",
+  "updated_at": "2011-04-14T16:00:49Z"
+}
