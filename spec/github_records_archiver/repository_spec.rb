@@ -42,7 +42,6 @@ RSpec.describe GitHubRecordsArchiver::Repository do
   it 'builds the repo dir' do
     path = File.expand_path "../../archive/#{name}", __dir__
     expect(subject.send(:repo_dir)).to eql(path)
-    expect(Dir.exist?(subject.send(:repo_dir))).to be_truthy
   end
 
   it 'builds the clone URL' do
