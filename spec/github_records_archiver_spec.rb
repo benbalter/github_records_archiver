@@ -1,4 +1,8 @@
 RSpec.describe GitHubRecordsArchiver do
+  before do
+    described_class.instance_variable_set '@client', nil
+  end
+
   it 'returns the token' do
     with_env 'GITHUB_TOKEN', 'TOKEN' do
       expect(described_class.token).to eql('TOKEN')

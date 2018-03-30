@@ -41,19 +41,19 @@ module GitHubRecordsArchiver
       File.write(path, to_s)
     end
 
-    def path
-      File.expand_path "#{data[:slug]}.md", organization.teams_dir
-    end
-
     def to_s
       meta_for_markdown.to_yaml
     end
 
-    def to_json
-      data.merge(reopsitories: repositories.map(&:name)).to_json
+    def as_json
+      data.to_h.merge(repositories: repositories.map(&:name))
     end
 
     private
+
+    def path
+      File.expand_path "#{data[:slug]}.md", organization.teams_dir
+    end
 
     def meta_for_markdown
       meta = {}

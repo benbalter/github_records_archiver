@@ -27,7 +27,9 @@ def fixture_path(fixture)
 end
 
 def fixture_contents(fixture)
-  File.read fixture_path(fixture)
+  path = fixture_path(fixture)
+  raise "Missing fixture for '#{fixture}'" unless File.exist?(path)
+  File.read(path)
 end
 
 def stub_api_request(fixture, args = nil)

@@ -19,6 +19,18 @@ module GitHubRecordsArchiver
       end
     end
 
+    def as_json
+      data.to_h
+    end
+
+    def to_json
+      as_json.to_json
+    end
+
+    def data
+      raise 'Not implemented'
+    end
+
     private
 
     def data_key?(key)

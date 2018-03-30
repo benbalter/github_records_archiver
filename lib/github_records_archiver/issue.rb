@@ -33,10 +33,6 @@ module GitHubRecordsArchiver
       end
     end
 
-    def path(ext = 'md')
-      File.expand_path "#{number}.#{ext}", repository.issues_dir
-    end
-
     def to_s
       md = meta_for_markdown.to_yaml + "---\n\n# #{title}\n\n"
       md << body unless body.to_s.empty?
@@ -44,8 +40,8 @@ module GitHubRecordsArchiver
       md
     end
 
-    def to_json
-      data.to_h.merge('comments' => comments.map(&:to_json)).to_json
+    def as_json
+      data.to_h.merge('comments' => comments.map(&:as_json))
     end
 
     def archive
@@ -54,6 +50,10 @@ module GitHubRecordsArchiver
     end
 
     private
+
+    def path(ext = 'md')
+      File.expand_path "#{number}.#{ext}", repository.issues_dir
+    end
 
     def meta_for_markdown
       meta = {}
