@@ -1,6 +1,6 @@
 # GitHub Records Archiver
 
-[![Build Status](https://travis-ci.org/benbalter/github-records-archiver.svg?branch=master)](https://travis-ci.org/benbalter/github-records-archiver) [![Gem Version](https://badge.fury.io/rb/github_records_archiver.svg)](http://badge.fury.io/rb/github_records_archiver) [![Coverage Status](https://coveralls.io/repos/github/benbalter/github_records_archiver/badge.svg)](https://coveralls.io/github/benbalter/github_records_archiver) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![Build Status](https://travis-ci.org/benbalter/github_records_archiver.svg?branch=master)](https://travis-ci.org/benbalter/github_records_archiver) [![Gem Version](https://badge.fury.io/rb/github_records_archiver.svg)](http://badge.fury.io/rb/github_records_archiver) [![Coverage Status](https://coveralls.io/repos/github/benbalter/github_records_archiver/badge.svg)](https://coveralls.io/github/benbalter/github_records_archiver) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 Backs up a GitHub organization's repositories and all their associated information for archival purposes.
 
@@ -18,8 +18,8 @@ Backs up a GitHub organization's repositories and all their associated informati
 
 ## Setup
 
-1. `git clone https://github.com/benbalter/github-records-archiver`
-2. `cd github-records-archiver`
+1. `git clone https://github.com/benbalter/github_records_archiver`
+2. `cd github_records_archiver`
 3. `gem install bundler`
 4. `bundle install`
 
