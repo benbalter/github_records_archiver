@@ -18,7 +18,11 @@ Backs up a GitHub organization's repositories and all their associated informati
 
 ## Setup
 
-If you have Ruby installed, simply run `gem install github_records_archiver` to install.
+If you have Ruby installed, simply run:
+
+```shell
+gem install github_records_archiver
+```
 
 ## Basic usage
 
