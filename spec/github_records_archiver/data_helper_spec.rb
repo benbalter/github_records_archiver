@@ -16,6 +16,10 @@ RSpec.describe GitHubRecordsArchiver::DataHelper do
     expect(subject.foo).to eql('bar')
   end
 
+  it 'responds to data' do
+    expect(subject.data).to eql(foo: 'bar')
+  end
+
   it 'responds to predicate methods' do
     expect(subject).to respond_to('foo?')
     expect(subject.foo?).to be_truthy

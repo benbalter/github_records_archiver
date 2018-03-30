@@ -1,6 +1,8 @@
 RSpec.describe GitHubRecordsArchiver::Issue do
   let(:repository) { 'balter-test-org/some-repo' }
   let(:number) { 1 }
+  let(:md_path) { subject.send(:path) }
+  let(:json_path) { subject.send(:path, 'json') }
   subject { described_class.new(repository: repository, number: number) }
 
   before do
@@ -85,5 +87,31 @@ EXP
     expect(data).to have_key('comments')
     expect(data['comments']).to be_an(Array)
     expect(data['comments'].first['id']).to eql(1)
+  end
+
+  it 'builds the issue path' do
+    base_path = File.expand_path "../../archive/#{repository}/issues/#{number}", __dir__
+    expect(md_path).to eql("#{base_path}.md")
+    expect(json_path).to eql("#{base_path}.json")
+  end
+
+  context 'archiving' do
+    before do
+      FileUtils.rm_rf md_path
+      FileUtils.rm_rf json_path
+      subject.archive
+    end
+
+    it 'writes MD' do
+      expect(File.exist?(md_path)).to be_truthy
+      contents = File.read(md_path)
+      expect(contents).to match(/# Found a bug/)
+    end
+
+    it 'writes JSON' do
+      expect(File.exist?(json_path)).to be_truthy
+      contents = File.read(json_path)
+      expect(contents).to match('{\"id\":1,')
+    end
   end
 end
