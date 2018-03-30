@@ -13,3 +13,6 @@ Metrics/BlockLength:
 Metrics/LineLength:
   Exclude:
     - spec/**/*
+
+Layout/IndentHeredoc:
+  Enabled: false
