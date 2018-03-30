@@ -1,6 +1,8 @@
 RSpec.describe GitHubRecordsArchiver::Team do
   let(:id) { 1 }
   let(:org) { 'balter-test-org' }
+  let(:slug) { 'justice-league' }
+  let(:path) { subject.send(:path) }
   subject { described_class.new(org, id) }
 
   before do
@@ -80,5 +82,24 @@ EXPECTED
     expect(data).to have_key('id')
     expect(data['id']).to eql(id)
     expect(data['name']).to eql('Justice League')
+  end
+
+  it "builds the path" do
+    expected = File.expand_path "../../archive/#{org}/teams/#{slug}.md", __dir__
+    expect(path).to eql(expected)
+  end
+
+  context "archiving" do
+
+    before do
+      FileUtils.rm_rf path
+      subject.archive
+    end
+
+    it "archives" do
+      expect(File.exist?(path)).to be_truthy
+      contents = File.read(path)
+      expect(contents).to match(/name: Justice League/)
+    end
   end
 end
