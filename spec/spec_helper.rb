@@ -50,3 +50,30 @@ def stub_api_request(fixture, args = nil)
     headers: { 'Content-Type' => 'application/json' }
   )
 end
+
+def capture(stream)
+  case stream
+  when :stdout
+    $stdout = StringIO.new
+  when :stderr
+    $stderr = StringIO.new
+  end
+
+  yield
+
+  output = case stream
+           when :stdout
+             $stdout.string
+           when :stderr
+             $stderr.string
+           end
+
+  output
+ensure
+  case stream
+  when :stdout
+    $stdout = STDOUT
+  when :stderr
+    $stderr = STDERR
+  end
+end

@@ -70,9 +70,9 @@ description: A great team.
 privacy: closed
 permission: admin
 repositories:
-- balter-test-org/Hello-World
+- balter-test-org/some-repo
 members:
-- octocat
+- balter-test-org
 EXPECTED
     expect(subject.to_s).to eql(expected)
   end

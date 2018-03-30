@@ -7,6 +7,7 @@ require 'fileutils'
 require 'open3'
 require 'thor'
 require 'octokit'
+require 'parallel'
 require 'dotenv/load'
 
 Octokit.auto_paginate = true
@@ -14,6 +15,7 @@ Octokit.auto_paginate = true
 module GitHubRecordsArchiver
   autoload :DataHelper,    'github_records_archiver/data_helper'
   autoload :Comment,       'github_records_archiver/comment'
+  autoload :CLI,           'github_records_archiver/cli'
   autoload :GitRepository, 'github_records_archiver/git_repository'
   autoload :Issue,         'github_records_archiver/issue'
   autoload :Organization,  'github_records_archiver/organization'

@@ -74,7 +74,7 @@ tags:
 I'm having a problem with this.
 
 ---
-@octocat at 2011-04-14 16:00:49 UTC wrote:
+@balter-test-org at 2011-04-14 16:00:49 UTC wrote:
 
 Me too
 EXP

@@ -2,8 +2,7 @@ AllCops:
   Exclude:
     - archive/**/*
     - vendor/**/*
-    - bin/github-records-archiver
-    
+
 Style/Documentation:
   Enabled: false
 
@@ -11,10 +10,25 @@ Metrics/BlockLength:
   Exclude:
     - spec/**/*
     - '*.gemspec'
+    - lib/github_records_archiver/cli.rb
 
 Metrics/LineLength:
   Exclude:
     - spec/**/*
+    - lib/github_records_archiver/cli.rb
+
+Metrics/MethodLength:
+  Exclude:
+    - lib/github_records_archiver/cli.rb
+    - spec/spec_helper.rb
+
+Metrics/AbcSize:
+  Exclude:
+    - lib/github_records_archiver/cli.rb
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - spec/spec_helper.rb
 
 Layout/IndentHeredoc:
   Enabled: false
