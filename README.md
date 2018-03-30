@@ -14,18 +14,15 @@ Backs up a GitHub organization's repositories and all their associated informati
 ## Requirements
 
 1. Ruby
-2. A GitHub [personal access token](https://github.com/settings/tokens/new) with `public_repo` and `repo` scope.
+2. A GitHub [personal access token](https://github.com/settings/tokens/new) with `repo` scope.
 
 ## Setup
 
-1. `git clone https://github.com/benbalter/github_records_archiver`
-2. `cd github_records_archiver`
-3. `gem install bundler`
-4. `bundle install`
+If you have Ruby installed, simply run `gem install github_records_archiver` to install.
 
 ## Usage
 
-`bin/archive [ORGANIZATION]`
+`github_records_archiver [ORGANIZATION]`
 
 You'll want to set the following environmental variable:
 
@@ -36,7 +33,7 @@ You *may* set the following environmental variables:
 * `GITHUB_ARCHIVE_DIR` to specify the output directory. It will default to `./archive`.
 * `GITHUB_ORGANIZATION` - The organization to archive if none is passed as an argument.
 
-These can be passed as `GITHUB_TOKEN=123ABC GITHUB_ORGANIZATION=whitehouse bin/archive`.
+These can be passed as `GITHUB_TOKEN=123ABC GITHUB_ORGANIZATION=whitehouse github_records_archiver`.
 
 You can also add the values to a `.env` file in the project's root directory, which will be automatically set as environmental variables.
 
