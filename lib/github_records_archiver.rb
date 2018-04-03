@@ -18,6 +18,7 @@ module GitHubRecordsArchiver
   autoload :CLI,           'github_records_archiver/cli'
   autoload :GitRepository, 'github_records_archiver/git_repository'
   autoload :Issue,         'github_records_archiver/issue'
+  autoload :Migration,     'github_records_archiver/migration'
   autoload :Organization,  'github_records_archiver/organization'
   autoload :Repository,    'github_records_archiver/repository'
   autoload :Team,          'github_records_archiver/team'
