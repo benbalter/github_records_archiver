@@ -27,12 +27,12 @@ gem install github_records_archiver
 ## Basic usage
 
 ```shell
-$ github_records_archiver archive ORGANIZATION --token PERSONAL_ACCESS_TOKEN`
+$ github-records-archiver archive ORGANIZATION --token PERSONAL_ACCESS_TOKEN`
 ```
 Alternatively, you could pass the personal access token as the `GITHUB_TOKEN` environmental variable:
 
 ```shell
-$ GITHUB_TOKEN=1234 github_records_archiver archive ORGANIZATION`
+$ GITHUB_TOKEN=1234 github-records-archiver archive ORGANIZATION`
 ```
 
 ## Output
