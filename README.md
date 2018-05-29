@@ -1,3 +1,7 @@
+**This project is no longer maintained. If you are interested in archiving your user or organization data, please use the purpose-built [migration API](https://developer.github.com/changes/2018-05-24-user-migration-api/) instead.**
+
+---
+
 # GitHub Records Archiver
 
 [![Build Status](https://travis-ci.org/benbalter/github_records_archiver.svg?branch=master)](https://travis-ci.org/benbalter/github_records_archiver) [![Gem Version](https://badge.fury.io/rb/github_records_archiver.svg)](http://badge.fury.io/rb/github_records_archiver) [![Coverage Status](https://coveralls.io/repos/github/benbalter/github_records_archiver/badge.svg)](https://coveralls.io/github/benbalter/github_records_archiver) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
